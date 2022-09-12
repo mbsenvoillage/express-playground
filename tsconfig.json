@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // Enables the generation of sourcemap files.
+    // These files allow debuggers and other tools to display
+    // the original TypeScript source code when actually working with the emitted JavaScript files
+    "sourceMap": true,
+    "target": "es2017",
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    // Module resolution is the process the compiler uses to figure out what an import refers to.
+    // attempts to mimic the Node.js module resolution mechanism at runtime.
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
