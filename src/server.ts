@@ -1,10 +1,6 @@
-import * as express from "express";
+import App from "./app";
+import PostsController from "./posts/posts.controller";
 
-const app = express();
+const app = new App([new PostsController()], 5000);
 
-// get => attaches cb for GET request for "/" calls, ie. the cb runs when "/" is requested
-app.get("/", (req, res) => {
-  res.send("Hello world !");
-});
-
-app.listen(5000);
+app.listen();
