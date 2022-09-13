@@ -1,6 +1,7 @@
-import HttpException from "exceptions/HttpExceptions";
-import PostNotFoundException from "exceptions/PostNotFoundException";
+import PostNotFoundException from "../exceptions/PostNotFoundException";
 import * as express from "express";
+import validationMiddleware from "../middleware/validation.middleware";
+import CreatePostDto from "./post.dto";
 import Post from "./post.interface";
 import postModel from "./posts.model";
 
@@ -14,9 +15,19 @@ class PostsController {
 
   public initRoutes() {
     this.router.get(this.path, this.getAllPosts);
-    this.router.post(this.path, this.createPost);
+
+    // if you add middleware before the handler, function, then it will run before the handler runs
+    this.router.post(
+      this.path,
+      validationMiddleware(CreatePostDto),
+      this.createPost
+    );
     this.router.get(`${this.path}/:id`, this.getPostById);
-    this.router.patch(`${this.path}/:id`, this.patchPost);
+    this.router.patch(
+      `${this.path}/:id`,
+      validationMiddleware(CreatePostDto, true),
+      this.patchPost
+    );
     this.router.delete(`${this.path}/:id`, this.deletePost);
   }
 
