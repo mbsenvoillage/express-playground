@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
+import errorMiddleware from "middleware/error.middleware";
 
 class App {
   public app: express.Application;
@@ -9,9 +10,13 @@ class App {
   constructor(controllers, port) {
     this.app = express();
     this.port = port;
+
+    // express runs all middlewares from first to last. However error handling
+    // middleware should sit at the end otherwise all the others would be bypassed
+    this.connectToDb();
     this.initMiddleware();
     this.initControllers(controllers);
-    this.connectToDb();
+    this.initErrorHandling();
   }
 
   private initMiddleware() {
@@ -22,6 +27,10 @@ class App {
     controllers.forEach((controller) => {
       this.app.use("/", controller.router);
     });
+  }
+
+  private initErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private connectToDb() {
